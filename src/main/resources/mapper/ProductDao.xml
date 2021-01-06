@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swust.emporium.dao.ProductDao">
+	<insert id="insertProduct" parameterType="com.swust.emporium.pojo.Product"
+		useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id"
+	>
+		insert
+		into
+		tb_product(
+			product_name,
+			product_desc,
+			img_addr,
+			normal_price,
+			promotion_price,
+			priority,
+			create_time,
+			last_edit_time,
+			enable_status,
+			product_category_id,
+			shop_id
+		)
+		values (
+			#{productName},
+			#{productDesc},
+			#{imgAddr},
+			#{normalPrice},
+			#{promotionPrice},
+			#{priority},
+			#{createTime},
+			#{lastEditTime},
+			#{enableStatus},
+			#{productCategory.productCategoryId},
+			#{shop.shopId}
+		)
+	</insert>
+
+	<resultMap id="productMap" type="com.swust.emporium.pojo.Product">
+		<id column="product_id" property="productId"></id>
+
+		<!--定义基本数据类型-->
+		<result column="product_name" property="productName"></result>
+		<result column="product_desc" property="productDesc"></result>
+		<result column="img_addr" property="imgAddr"></result>
+		<result column="normal_price" property="normalPrice"></result>
+		<result column="promotion_price" property="promotionPrice"></result>
+		<result column="priority" property="priority"></result>
+		<result column="create_time" property="createTime"></result>
+		<result column="last_edit_time" property="lastEditTime"></result>
+		<result column="enable_status" property="enableStatus"></result>
+
+		<!--定义复合数据类型-->
+		<association property="productCategory"
+					 column="product_category_id"
+					 javaType="com.swust.emporium.pojo.ProductCategory">
+			<id column="product_category_id" property="productCategoryId"></id>
+			<result column="product_category_name" property="productCategoryName"></result>
+		</association>
+
+		<association property="shop"
+					 column="shop_id"
+					 javaType="com.swust.emporium.pojo.Shop">
+			<id column="shop_id" property="shopId"></id>
+<!--			<result column="owner_id" property="ownerId"></result>-->
+			<result column="shop_name" property="shopName"></result>
+		</association>
+
+		<collection property="productImgList"
+					column="product_id"
+					ofType="com.swust.emporium.pojo.ProductImg">
+			<id column="product_img_id" property="productImgId"></id>
+			<result column="detail_img" property="imgAddr"></result>
+			<result column="img_desc" property="imgDesc"></result>
+			<result column="priority" property="priority"></result>
+			<result column="create_time" property="createTime"></result>
+			<result column="product_id" property="productId"></result>
+		</collection>
+	</resultMap>
+
+	<select id="queryProductById" resultMap="productMap">
+		SELECT
+			p.product_id,
+			p.product_name,
+			p.product_desc,
+			p.img_addr,
+			p.normal_price,
+			p.promotion_price,
+			p.priority,
+			p.create_time,
+			p.last_edit_time,
+			p.enable_status,
+			p.product_category_id,
+			p.shop_id,
+
+			pm.product_img_id,
+			pm.img_addr,
+			pm.img_desc,
+			pm.priority,
+			pm.create_time
+		FROM
+		tb_product p
+		LEFT JOIN
+		tb_product_img pm
+		ON
+		p.product_id = pm.product_id
+		WHERE
+		p.product_id = #{productId}
+		ORDER BY
+		pm.priority DESC
+
+	</select>
+
+	<update id="updateProduct" parameterType="com.swust.emporium.pojo.Product"
+			keyProperty="product_id" useGeneratedKeys="true">
+		update
+			tb_product
+		<set>
+			<if test="productName != null"> product_name = #{productName},</if>
+			<if test="productDesc != null"> product_desc = #{productDesc},</if>
+			<if test="imgAddr != null"> img_addr = #{imgAddr},</if>
+			<if test="normalPrice != null"> normal_price = #{normalPrice},</if>
+			<if test="promotionPrice != null"> promotion_price = #{promotionPrice},</if>
+			<if test="priority != null"> priority = #{priority},</if>
+			<if test="lastEditTime != null"> last_edit_time = #{lastEditTime},</if>
+			<if test="enableStatus != null"> enable_status = #{enableStatus},</if>
+			<!--复合类型-->
+			<if test="productCategory != null and productCategory.productCategoryId != null"> product_category_id = #{productCategory.productCategoryId}</if>
+
+		</set>
+		where
+			product_id = #{productId}
+		and
+			shop_id = #{shop.shopId}
+	</update>
+
+	<select id="queryProductList" resultType="com.swust.emporium.pojo.Product">
+
+		SELECT
+			product_id,
+			product_name,
+			product_desc,
+			img_addr,
+			normal_price,
+			promotion_price,
+			priority,
+			create_time,
+			last_edit_time,
+			enable_status,
+			product_category_id,
+			shop_id
+		FROM
+		tb_product
+		<where>
+			<if test="productCondition.enableStatus!= null">
+				and enable_status = #{productCondition.enableStatus}
+			</if>
+
+			<if test="productCondition.shop != null and
+				productCondition.shop.shopId != null">
+				and shop_id = #{productCondition.shop.shopId}
+			</if>
+
+			<if test="productCondition.productCategory != null and
+				productCondition.productCategory.productCategoryId != null">
+				and product_category_id = #{productCondition.productCategory.productCategoryId}
+			</if>
+
+			<if test="productCondition.productName != null">
+				and product_name like '%${productCondition.productName}%'
+			</if>
+		</where>
+		ORDER BY
+		priority
+		DESC
+		LIMIT #{rowIndex},#{pageSize};
+
+	</select>
+
+
+	<select id="queryProductListCount" resultType="int">
+		SELECT
+			COUNT(1)
+		FROM
+		tb_product
+		<where>
+			<if test="productCondition.enableStatus!= null">
+				and enable_status = #{productCondition.enableStatus}
+			</if>
+
+			<if test="productCondition.shop != null and
+				productCondition.shop.shopId != null">
+				and shop_id = #{productCondition.shop.shopId}
+			</if>
+
+			<if test="productCondition.productCategory != null and
+				productCondition.productCategory.productCategoryId != null">
+				and product_category_id = #{productCondition.productCategory.productCategoryId}
+			</if>
+
+			<if test="productCondition.productName != null">
+				and product_name like '%${productCondition.productName}%'
+			</if>
+		</where>
+	</select>
+	
+	<update id="updateProductCategoryToNull" parameterType="Long" >
+		UPDATE
+		tb_product
+		SET
+		product_category_id = null
+		WHERE
+		product_category_id = #{productCategoryId}
+	</update>
+	
+</mapper>

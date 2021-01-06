@@ -1,0 +1,93 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         id="WebApp_ID" version="3.0">
+
+  <display-name>Archetype Created Web Application</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>frontend/login.html</welcome-file>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <!--验证码管理工具-->
+  <servlet>
+    <servlet-name>Kaptcha</servlet-name>
+    <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+    <!--定义样式-->
+    <!--定义样式 是否有边框-->
+    <init-param>
+      <param-name>kaptcha.border</param-name>
+      <param-value>no</param-value>
+    </init-param>
+    <!--定义样式 字体颜色-->
+    <init-param>
+      <param-name>kaptcha.textproducer.font.color</param-name>
+      <param-value>red</param-value>
+    </init-param>
+    <!--定义样式 字体颜色-->
+    <init-param>
+      <param-name>kaptcha.textproducer.font.size</param-name>
+      <param-value>43</param-value>
+    </init-param>
+    <!--定义样式 干扰线颜色-->
+    <init-param>
+      <param-name>kaptcha.noise.color</param-name>
+      <param-value>yellow</param-value>
+    </init-param>
+    <!--定义样式 图片宽度-->
+    <init-param>
+      <param-name>kaptcha.image.width</param-name>
+      <param-value>135</param-value>
+    </init-param>
+    <!--定义样式 字符个数-->
+    <init-param>
+      <param-name>kaptcha.textproducer.char.length</param-name>
+      <param-value>4</param-value>
+    </init-param>
+    <!--定义样式 字体-->
+    <init-param>
+      <param-name>kaptcha.textproducer.font.names</param-name>
+      <param-value>Arial</param-value>
+    </init-param>
+    <!--定义样式 图片高度-->
+    <init-param>
+      <param-name>kaptcha.image.height</param-name>
+      <param-value>50</param-value>
+    </init-param>
+    <!--使用哪些字符生成验证码-->
+    <init-param>
+      <param-name>kaptcha.testproducer.char.string</param-name>
+      <param-value>ACDEFGHJKL2345678</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>Kaptcha</servlet-name>
+    <url-pattern>/Kaptcha</url-pattern>
+  </servlet-mapping>
+
+
+
+
+  <!--Spring 配置相关信息-->
+  <servlet>
+    <servlet-name>spring-dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring/spring-*.xml</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>spring-dispatcher</servlet-name>
+    <!--默认匹配所有请求-->
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+</web-app>

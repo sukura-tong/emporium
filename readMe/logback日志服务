@@ -1,0 +1,17 @@
+
+
+logback-access 日志服务
+
+logback-classic
+    log4j的API改良版本
+
+logback-core
+    基础服务
+
+    标签
+        @logger
+            存放日志对象、记录日志级别
+        @appender
+            指定日志输出位置
+        @layout
+            格式化标签

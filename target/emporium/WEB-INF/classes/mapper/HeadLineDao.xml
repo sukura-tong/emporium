@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.swust.emporium.dao.HeadLineDao">
+	<select id="queryHeadLine" resultType="com.swust.emporium.pojo.HeadLine">
+		SELECT
+		line_id,
+		line_name,
+		line_link,
+		line_img,
+		priority,
+		enable_status,
+		create_time,
+		last_edit_time
+		FROM
+		tb_head_line
+		<where>
+			<if test="headLineCondition != null and headLineCondition.enableStatus != null">
+				and enable_status = #{headLineCondition.enableStatus}
+			</if>
+
+<!--			<if test="headLineCondition != null and headLineCondition.lineId != null">-->
+<!--				and line_id = #{headLineCondition.lineId}-->
+<!--			</if>-->
+
+<!--			<if test="headLineCondition != null and headLineCondition.lineName != null">-->
+<!--				and line_name like '%{headLineCondition.lineName}%'-->
+<!--			</if>-->
+
+		</where>
+		ORDER BY
+		priority DESC
+	</select>
+
+
+</mapper>
