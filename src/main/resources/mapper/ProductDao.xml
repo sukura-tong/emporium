@@ -14,6 +14,7 @@
 			img_addr,
 			normal_price,
 			promotion_price,
+			point,
 			priority,
 			create_time,
 			last_edit_time,
@@ -27,6 +28,7 @@
 			#{imgAddr},
 			#{normalPrice},
 			#{promotionPrice},
+			#{point},
 			#{priority},
 			#{createTime},
 			#{lastEditTime},
@@ -45,6 +47,7 @@
 		<result column="img_addr" property="imgAddr"></result>
 		<result column="normal_price" property="normalPrice"></result>
 		<result column="promotion_price" property="promotionPrice"></result>
+		<result column="point" property="point"></result>
 		<result column="priority" property="priority"></result>
 		<result column="create_time" property="createTime"></result>
 		<result column="last_edit_time" property="lastEditTime"></result>
@@ -86,6 +89,7 @@
 			p.img_addr,
 			p.normal_price,
 			p.promotion_price,
+			p.point,
 			p.priority,
 			p.create_time,
 			p.last_edit_time,
@@ -121,6 +125,7 @@
 			<if test="imgAddr != null"> img_addr = #{imgAddr},</if>
 			<if test="normalPrice != null"> normal_price = #{normalPrice},</if>
 			<if test="promotionPrice != null"> promotion_price = #{promotionPrice},</if>
+			<if test="point != null">point = #{point},</if>
 			<if test="priority != null"> priority = #{priority},</if>
 			<if test="lastEditTime != null"> last_edit_time = #{lastEditTime},</if>
 			<if test="enableStatus != null"> enable_status = #{enableStatus},</if>
@@ -143,6 +148,7 @@
 			img_addr,
 			normal_price,
 			promotion_price,
+			point,
 			priority,
 			create_time,
 			last_edit_time,

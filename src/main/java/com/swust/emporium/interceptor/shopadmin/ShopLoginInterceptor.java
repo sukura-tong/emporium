@@ -1,6 +1,5 @@
 package com.swust.emporium.interceptor.shopadmin;
 
-import com.swust.emporium.pojo.PersonInfo;
 import com.swust.emporium.pojo.UserLogin;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

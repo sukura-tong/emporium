@@ -174,7 +174,37 @@ emporium
     alter table tb_product drop column point;
     alter table tb_shop_category add `parent` not null;
     alter table tb_user_login add `status` int(2) not null;
+    alter table tb_product add `point` int(10) DEFAULT NULL;
 
+兑换商品
+    CREATE TABLE `tb_award` (
+      `award_id` int(10) NOT NULL AUTO_INCREMENT,
+      `award_name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+      `award_desc` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `award_img` varchar(1024) COLLATE utf8_unicode_ci DEFAULT NULL,
+      `point` int(10) NOT NULL DEFAULT '0',
+      `priority` int(2) DEFAULT NULL,
+      `create_time` datetime DEFAULT NULL,
+      `expire_time` datetime DEFAULT NULL,
+      `last_edit_time` datetime DEFAULT NULL,
+      `enable_status` int(2) NOT NULL DEFAULT '0',
+      `shop_id` int(10) DEFAULT NULL,
+      PRIMARY KEY (`award_id`),
+      KEY `fk_award_shop_idx` (`shop_id`),
+      CONSTRAINT `fk_award_shop` FOREIGN KEY (`shop_id`) REFERENCES `tb_shop` (`shop_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+# 商品销量
+    CREATE TABLE `tb_product_sell_daily`(
+        `product_id` int(100) DEFAULT NULL,
+        `shop_id` int(10) DEFAULT NULL,
+        `create_time` datetime DEFAULT NULL,
+        `total` int(10) DEFAULT '0',
+        KEY `fk_product_sell_product`(`product_id`),
+        KEY `fk_product_sell_shop`(`shop_id`),
+        CONSTRAINT `fk_product_sell_product` FOREIGN KEY (`product_id`) REFERENCES `tb_product` (`product_id`),
+        CONSTRAINT `fk_product_sell_shop` FOREIGN KEY (`shop_id`) REFERENCES `tb_shop` (`shop_id`)
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # 实体类相互关联情况
     用户信息

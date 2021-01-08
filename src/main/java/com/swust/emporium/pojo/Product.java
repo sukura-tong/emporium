@@ -23,6 +23,7 @@ public class Product {
     private String imgAddr;// 简略图
     private String normalPrice;//产品原价
     private String promotionPrice;//产品折扣价格
+    private Integer point;//商品积分
     private Integer priority;//产品权重
     private Date createTime;//产品上架时间
     private Date lastEditTime;//编辑时间
